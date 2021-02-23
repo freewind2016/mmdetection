@@ -1,8 +1,10 @@
+import mmcv
 import torch
 
 from mmdet.core import bbox_overlaps
 
 
+@mmcv.jit(derivate=True, coderize=True)
 def isr_p(cls_score,
           bbox_pred,
           bbox_targets,
@@ -50,7 +52,8 @@ def isr_p(cls_score,
     for i in range(len(sampling_results)):
         gt_i = sampling_results[i].pos_assigned_gt_inds
         gts.append(gt_i + last_max_gt)
-        last_max_gt = gt_i.max() + 1
+        if len(gt_i) != 0:
+            last_max_gt = gt_i.max() + 1
     gts = torch.cat(gts)
     assert len(gts) == num_pos
 
@@ -115,6 +118,7 @@ def isr_p(cls_score,
     return bbox_targets
 
 
+@mmcv.jit(derivate=True, coderize=True)
 def carl_loss(cls_score,
               labels,
               bbox_pred,

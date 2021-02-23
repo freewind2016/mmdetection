@@ -12,7 +12,7 @@ model = dict(
         norm_cfg=dict(type='BN', requires_grad=True),
         norm_eval=True,
         style='pytorch',
-        dcn=dict(type='DCN', deformable_groups=1, fallback_on_stride=False),
+        dcn=dict(type='DCN', deform_groups=1, fallback_on_stride=False),
         stage_with_dcn=(False, True, True, True)))
 # dataset settings
 img_norm_cfg = dict(
@@ -39,4 +39,4 @@ data = dict(
     samples_per_gpu=1, workers_per_gpu=1, train=dict(pipeline=train_pipeline))
 # learning policy
 lr_config = dict(step=[16, 19])
-total_epochs = 20
+runner = dict(max_epochs=20)
